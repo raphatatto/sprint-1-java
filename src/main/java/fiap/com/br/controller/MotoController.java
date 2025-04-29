@@ -10,15 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/motos")
 public class MotoController {
 
     private final MotoService motoService;
-
-    public MotoController(MotoService motoService) {
-        this.motoService = motoService;
-    }
 
     @PostMapping
     public ResponseEntity<MotoDTO> cadastrar(@RequestBody @Valid MotoCreateDTO dto) {
@@ -34,8 +31,10 @@ public class MotoController {
     public ResponseEntity<MotoDTO> buscarPorPlaca(@PathVariable String placa) {
         return ResponseEntity.ok(motoService.buscarPorPlaca(placa));
     }
-
-    public MotoService getMotoService() {
-        return motoService;
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        motoService.remover(id);
+        return ResponseEntity.noContent().build();
     }
+
 }

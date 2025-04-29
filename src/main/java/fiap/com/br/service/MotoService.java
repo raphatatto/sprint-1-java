@@ -4,6 +4,7 @@ import fiap.com.br.dto.MotoCreateDTO;
 import fiap.com.br.dto.MotoDTO;
 import fiap.com.br.model.Moto;
 import fiap.com.br.model.StatusMoto;
+import fiap.com.br.model.StatusVaga;
 import fiap.com.br.model.Vaga;
 import fiap.com.br.repository.MotoRepository;
 import fiap.com.br.repository.VagaRepository;
@@ -12,23 +13,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
-@RestController
-@RequestMapping("/motos")
+@Service
 @RequiredArgsConstructor
 public class MotoService {
 
     private final MotoRepository motoRepository;
     private final VagaRepository vagaRepository;
-
-    public MotoService(MotoRepository motoRepository, VagaRepository vagaRepository) {
-        this.motoRepository = motoRepository;
-        this.vagaRepository = vagaRepository;
-    }
 
     public MotoDTO cadastrar(MotoCreateDTO dto) {
         Moto moto = new Moto();
@@ -40,6 +33,14 @@ public class MotoService {
         if (dto.getIdVaga() != null) {
             Vaga vaga = vagaRepository.findById(dto.getIdVaga())
                     .orElseThrow(() -> new EntityNotFoundException("Vaga não encontrada"));
+
+            if (vaga.getStatus() == StatusVaga.OCUPADA) {
+                throw new IllegalStateException("Vaga já está ocupada");
+            }
+
+            vaga.setStatus(StatusVaga.OCUPADA);
+            vagaRepository.save(vaga);
+
             moto.setVaga(vaga);
         }
 
@@ -56,18 +57,21 @@ public class MotoService {
         return toDTO(moto);
     }
 
+    public void remover(Long id) {
+        Moto moto = motoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Moto não encontrada"));
+
+        Vaga vaga = moto.getVaga();
+        if (vaga != null) {
+            vaga.setStatus(StatusVaga.LIVRE);
+            vagaRepository.save(vaga);
+        }
+
+        motoRepository.delete(moto);
+    }
+
     private MotoDTO toDTO(Moto moto) {
         String vagaCodigo = moto.getVaga() != null ? moto.getVaga().getCodigo() : "Sem vaga";
         return new MotoDTO(moto.getId(), moto.getPlaca(), moto.getModelo(), moto.getStatus(), vagaCodigo);
     }
-
-    public MotoRepository getMotoRepository() {
-        return motoRepository;
-    }
-
-    public VagaRepository getVagaRepository() {
-        return vagaRepository;
-    }
-
-
 }

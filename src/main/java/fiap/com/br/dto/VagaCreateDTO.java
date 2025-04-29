@@ -13,12 +13,4 @@ public class VagaCreateDTO {
     private String codigo;
 
     private StatusVaga status = StatusVaga.LIVRE;
-
-    public StatusVaga getStatus() {
-        return null;
-    }
-
-    public String getCodigo() {
-        return "";
-    }
 }

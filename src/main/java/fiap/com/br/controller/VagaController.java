@@ -17,14 +17,12 @@ public class VagaController {
 
     private final VagaService vagaService;
 
-    public VagaController(VagaService vagaService) {
-        this.vagaService = vagaService;
-    }
 
     @PostMapping
     public ResponseEntity<VagaDTO> cadastrar(@RequestBody @Valid VagaCreateDTO dto) {
         return ResponseEntity.ok(vagaService.cadastrar(dto));
     }
+
 
     @GetMapping
     public Page<VagaDTO> listar(Pageable pageable) {
@@ -46,5 +44,11 @@ public class VagaController {
         vagaService.deletar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<VagaDTO> buscarPorCodigo(@RequestParam long id) {
+        return ResponseEntity.ok(vagaService.buscarPorId(id));
+    }
+
 
 }

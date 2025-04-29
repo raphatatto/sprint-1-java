@@ -4,7 +4,6 @@ import fiap.com.br.model.StatusMoto;
 import lombok.*;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class MotoDTO {
     private Long id;
@@ -14,5 +13,10 @@ public class MotoDTO {
     private String vaga;
 
     public MotoDTO(Long id, String placa, String modelo, StatusMoto status, String vagaCodigo) {
+        this.id = id;
+        this.placa = placa;
+        this.modelo = modelo;
+        this.status = status;
+        this.vaga = vagaCodigo;
     }
 }

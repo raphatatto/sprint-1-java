@@ -16,16 +16,13 @@ public class VagaService {
 
     private final VagaRepository vagaRepository;
 
-    public VagaService(VagaRepository vagaRepository) {
-        this.vagaRepository = vagaRepository;
-    }
-
     public VagaDTO cadastrar(VagaCreateDTO dto) {
         Vaga vaga = new Vaga();
         vaga.setCodigo(dto.getCodigo());
         vaga.setStatus(dto.getStatus());
-        vaga = vagaRepository.save(vaga);
-        return toDTO(vaga);
+        return toDTO(vagaRepository.save(vaga));
+
+
     }
 
     public Page<VagaDTO> listar(Pageable pageable) {
@@ -57,7 +54,4 @@ public class VagaService {
         return new VagaDTO(vaga.getId(), vaga.getCodigo(), vaga.getStatus());
     }
 
-    public VagaRepository getVagaRepository() {
-        return vagaRepository;
-    }
 }
