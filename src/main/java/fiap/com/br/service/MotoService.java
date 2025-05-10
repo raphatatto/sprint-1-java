@@ -2,6 +2,7 @@ package fiap.com.br.service;
 
 import fiap.com.br.dto.MotoCreateDTO;
 import fiap.com.br.dto.MotoDTO;
+import fiap.com.br.exception.BusinessException;
 import fiap.com.br.model.Moto;
 import fiap.com.br.model.StatusMoto;
 import fiap.com.br.model.StatusVaga;
@@ -32,11 +33,12 @@ public class MotoService {
 
         if (dto.getIdVaga() != null) {
             Vaga vaga = vagaRepository.findById(dto.getIdVaga())
-                    .orElseThrow(() -> new EntityNotFoundException("Vaga não encontrada"));
+                    .orElseThrow(() -> new BusinessException("Vaga não encontrada"));
 
-            if (vaga.getStatus() == StatusVaga.OCUPADA) {
-                throw new IllegalStateException("Vaga já está ocupada");
+            if (vaga.getStatus().equals(StatusVaga.OCUPADA)) {
+                throw new BusinessException("Vaga já está ocupada");
             }
+
 
             vaga.setStatus(StatusVaga.OCUPADA);
             vagaRepository.save(vaga);
@@ -71,7 +73,19 @@ public class MotoService {
     }
 
     private MotoDTO toDTO(Moto moto) {
-        String vagaCodigo = moto.getVaga() != null ? moto.getVaga().getCodigo() : "Sem vaga";
-        return new MotoDTO(moto.getId(), moto.getPlaca(), moto.getModelo(), moto.getStatus(), vagaCodigo);
+        String vagaCodigo = "Sem vaga";
+
+        if (moto.getVaga() != null && moto.getVaga().getCodigo() != null) {
+            vagaCodigo = moto.getVaga().getCodigo();
+        }
+
+        return new MotoDTO(
+                moto.getId(),
+                moto.getPlaca(),
+                moto.getModelo(),
+                moto.getStatus(),
+                vagaCodigo
+        );
     }
+
 }
