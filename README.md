@@ -149,5 +149,6 @@ src/
 
 ## 📥 Download
 
-- [📥 Baixar coleção de testes do Postman](https://github.com/raphatatto/sprint-1-java/blob/master/Sprint1-Mottu-Postman-Collection.json)
+[📥 Baixar testes do Postman](https://github.com/raphatatto/sprint-1-java/raw/master/Sprint1-Mottu-Postman-Collection.json)
+
 
