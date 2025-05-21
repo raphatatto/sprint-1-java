@@ -11,6 +11,7 @@ import fiap.com.br.repository.MotoRepository;
 import fiap.com.br.repository.VagaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -49,15 +50,20 @@ public class MotoService {
         return toDTO(motoRepository.save(moto));
     }
 
+
+    @Cacheable(value = "motosListadas", key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort")
     public Page<MotoDTO> listar(Pageable pageable) {
         return motoRepository.findAll(pageable).map(this::toDTO);
     }
 
+
+    @Cacheable(value = "motosPorPlaca", key = "#placa")
     public MotoDTO buscarPorPlaca(String placa) {
         Moto moto = motoRepository.findByPlaca(placa)
                 .orElseThrow(() -> new EntityNotFoundException("Moto não encontrada"));
         return toDTO(moto);
     }
+
 
     public void remover(Long id) {
         Moto moto = motoRepository.findById(id)
