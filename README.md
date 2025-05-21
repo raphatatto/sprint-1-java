@@ -147,8 +147,13 @@ src/
 
 ---
 
-## 📥 Download
+## 📥 Testes via Postman
 
-[📥 Baixar testes do Postman](https://github.com/raphatatto/sprint-1-java/raw/master/Sprint1-Mottu-Postman-Collection.json)
+Você pode importar a coleção de testes diretamente no Postman para simular as operações da API:
+
+➡️ Clique com o **botão direito no link abaixo** e selecione **“Salvar link como...”** para fazer o download:
+
+[📥 Baixar testes do Postman (JSON)](https://github.com/raphatatto/sprint-1-java/raw/master/Sprint1-Mottu-Postman-Collection.json)
+
 
 
