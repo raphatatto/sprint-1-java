@@ -147,6 +147,7 @@ src/
 
 ---
 
-## 📝 Licença
+## 📥 Download
 
-Projeto acadêmico desenvolvido como parte da disciplina **Java Advanced** — FIAP (1ª Sprint - 2025).
+- [📥 Baixar coleção de testes do Postman](https://github.com/raphatatto/sprint-1-java/raw/main/Sprint1-Mottu-Postman-Collection.json)
+
